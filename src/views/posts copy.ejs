@@ -1,0 +1,40 @@
+<%- contentFor('body') %>
+<div class="max-w-3xl mx-auto mt-10">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Publicaciones</h1>
+    <form action="/posts/create" method="POST" class="mb-6"> <!-- Cambié la acción a '/posts/create' -->
+        <textarea name="content" placeholder="Escribe algo..." required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3"></textarea>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Publicar</button>
+    </form>
+    <div class="bg-white shadow-lg rounded-lg px-8 py-6">
+        <% posts.forEach(post => { %>
+            <div class="mb-6 border-b pb-4 flex items-start">
+                <div class="mr-4">
+                    <img src="<%= post.author.profilePicture %>" alt="<%= post.author.username %>'s profile picture" class="w-12 h-12 rounded-full object-cover"> <!-- Aquí se asume que tienes una propiedad profilePicture en el autor -->
+                </div>
+                <div>
+                    <p class="text-gray-800 text-lg font-semibold"><%= post.content %></p>
+                    <p class="text-sm text-gray-500">Publicado por <%= post.author.username %></p> <!-- Cambié post.user.username a post.author.username -->
+                    
+                    <div class="mt-4">
+                        <h3 class="text-lg font-semibold">Comentarios:</h3>
+                        <% if (post.comments.length > 0) { %>
+                            <% post.comments.forEach(comment => { %>
+                                <div class="bg-gray-100 p-4 rounded mt-2">
+                                    <p><%= comment.content %></p>
+                                    <p class="text-sm text-gray-500">Comentado por <%= comment.author.username %></p> <!-- Asegúrate de que tienes un campo author en el modelo Comment -->
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <p class="text-gray-500">No hay comentarios aún.</p>
+                        <% } %>
+                    </div>
+
+                    <form action="/posts/<%= post.id %>/comment" method="POST" class="mt-4"> <!-- Cambié la acción para enviar comentarios -->
+                        <textarea name="content" placeholder="Escribe un comentario..." required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"></textarea>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Comentar</button>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>

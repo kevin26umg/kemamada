@@ -1,0 +1,86 @@
+<%- contentFor('body') %>
+<div class="max-w-md mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Chat</h1>
+    
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-lg font-semibold">Amigos</h2>
+        <ul class="list-none">
+            <% friends.forEach(friend => { %>
+                <li class="mb-2">
+                    <a  style="cursor: pointer;" class="text-blue-500 hover:underline" onclick="loadMessages('<%= friend.friend.id %>', '<%= friend.friend.username %>')"><%= friend.friend.username %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <div id="messagesContainer" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hidden">
+        <h2 class="text-lg font-semibold">Mensajes con <span id="friendName"></span></h2>
+        <div id="messagesList" class="h-48 overflow-y-auto mb-4 border border-gray-300 p-2 rounded flex flex-col"></div>
+        
+        <form id="messageForm" onsubmit="sendMessage(event)">
+            <textarea id="messageContent" placeholder="Escribe un mensaje..." required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3"></textarea>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enviar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+const userId = parseInt('<%= userId %>', 10); // Define userId aquí
+
+    let currentFriendId;
+
+    function loadMessages(friendId, friendUsername) {
+    currentFriendId = friendId;
+    document.getElementById('friendName').innerText = friendUsername;
+    document.getElementById('messagesContainer').classList.remove('hidden');
+
+    fetch(`/chat/messages/${friendId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error fetching messages');
+            }
+            return response.json();
+        })
+        .then(messages => {
+            const messagesList = document.getElementById('messagesList');
+            messagesList.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('mb-2', 'p-2', 'rounded', 'max-w-xs', 'w-fit');
+                
+                // Asegúrate de que userId esté en el formato correcto
+                if (message.senderId === userId) {
+                    messageElement.classList.add('bg-blue-500', 'text-white', 'self-end', 'text-right'); // Mensajes del usuario
+                    messageElement.innerText = `Yo: ${message.content}`;
+                } else {
+                    messageElement.classList.add('bg-gray-200', 'text-black', 'self-start', 'text-left'); // Mensajes del amigo
+                    messageElement.innerText = `${friendUsername}: ${message.content}`;
+                }
+                messagesList.appendChild(messageElement);
+            });
+            messagesList.scrollTop = messagesList.scrollHeight; // Desplazar hacia abajo
+        })
+        .catch(error => {
+            console.error('Error fetching messages:', error);
+        });
+}
+
+
+    function sendMessage(event) {
+        event.preventDefault();
+        const content = document.getElementById('messageContent').value;
+
+        fetch('/chat/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ recipientId: currentFriendId, content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('messageContent').value = '';
+            loadMessages(currentFriendId, document.getElementById('friendName').innerText);
+        });
+    }
+</script>

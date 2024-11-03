@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kemámada</title>
+    <!-- <link href="/css/tailwind.css" rel="stylesheet"> -->
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <%- include('../partials/header') %>
+    <div id="notification-container" class="fixed top-0 right-0 m-4"></div>
+    <main class="container mx-auto mt-4 px-4">
+    <!-- Contenedor principal con `flex-grow` -->
+    <main class="container mx-auto mt-4 px-4 flex-grow">
+        <%- body %>
+    </main>
+
+    <!-- Footer fijo al final de la pantalla si el contenido es corto -->
+    <!-- <%- include('../partials/footer') %> -->
+
+    <script src="/socket.io/socket.io.js"></script>
+    <% if (locals.user) { %>
+        <script src="/js/main.js"></script>
+    <% } %>
+</body>
+</html>

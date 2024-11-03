@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kemámada</title>
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <div id="notification-container" class="fixed top-0 right-0 m-4"></div>
+
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <aside class="bg-gradient-to-r from-blue-500 to-indigo-600 fixed top-0 left-0 w-64 h-screen shadow-lg p-4">
+
+            <div class="flex items-center mb-6">
+                <img src="<%= locals.user ? locals.user.profilePicture : '' %>" alt="Perfil" class="w-12 h-12 rounded-full mr-2">
+                <span class="text-white font-bold text-lg"><%= locals.user ? locals.user.username : 'Usuario' %></span>
+            </div>
+
+            <nav class="flex flex-col space-y-2">
+                <% if (locals.user) { %>
+                    <a href="/profile" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13s-7-8-7-13a7 7 0 017-7zm0 10a3 3 0 10-.002-6.001A3 3 0 0012 12z"/></svg>
+                        <span>Perfil</span>
+                    </a>
+                    <a href="/posts" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M17 5H3a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V6a1 1 0 00-1-1zm-7 12H5v-2h5v2zm0-4H5V9h5v4zm6 4h-4v-6h4v6zm0-8h-4V7h4v2z"/></svg>
+                        <span>Posts</span>
+                    </a>
+                    <a href="/friends" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M16 14c-2.6 0-4.255.622-5.467 1.135a3.7 3.7 0 00-1.066.565c-1.049.838-2.466.99-3.531.99S5.43 16.538 4.4 15.7A3.497 3.497 0 013 13.016V7a4 4 0 118 0v3.016c0 .717.378 1.382.967 1.752.649.396 1.545.402 2.033.047C15.572 10.65 17 9.475 17 7.25V3.5a4.5 4.5 0 014.5 4.5v6a3.503 3.503 0 01-5.5 2.913z"/></svg>
+                        <span>Amigos</span>
+                    </a>
+                    <a href="/users" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M16 2c2.21 0 4 1.79 4 4s-1.79 4-4 4c-.74 0-1.45-.21-2.07-.57l-2.47 2.47a5.98 5.98 0 01-1.07-2.07L12.57 6.93C13.2 6.45 14.1 6 15 6s1.8.45 2.57 1.07A3.983 3.983 0 0116 2zm-4 20c-5.33 0-8-4-8-4 2.03-1.34 3.41-2.7 3.41-2.7s1.51 1.52 2.86 2.76c.15.14.28.26.4.37 1.13-.94 2.5-1.75 4.15-2.3 1.52.43 2.76 1.67 3.19 3.19-2.57.9-5.3 2.39-5.3 2.39S14.33 22 12 22z"/></svg>
+                        <span>Buscar amigos</span>
+                    </a>
+                    <a href="/chat" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2a1 1 0 011 1v17a1 1 0 01-1.73.686L14 15H4a2 2 0 01-2-2V4a2 2 0 012-2h16zM6 8h8v2H6V8zm0-4h12v2H6V4zm0 8h4v2H6v-2z"/></svg>
+                        <span>Chat</span>
+                    </a>
+                    <a href="/auth/logout" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M15 13h2V7h-2v6zm3-12H6C4.89 1 4 1.89 4 3v12c0 1.11.89 2 2 2h12c1.11 0 2-.89 2-2V3c0-1.11-.89-2-2-2zM6 3h12v12H6V3zm3 17h6v2H9v-2z"/></svg>
+                        <span>Salir</span>
+                    </a>
+                <% } else { %>
+                    <a href="/auth/login" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <span>Entrar</span>
+                    </a>
+                    <a href="/auth/register" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <span>Registrarse</span>
+                    </a>
+                <% } %>
+            </nav>
+        </aside>
+
+        <main class="container mx-auto mt-4 px-4 flex-grow">
+            <%- body %>
+        </main>
+    </div>
+
+    <style>
+        /* Estilos opcionales para el sidebar */
+        aside {
+            transition: width 0.2s;
+        }
+    </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <% if (locals.user) { %>
+        <script src="/js/main.js"></script>
+    <% } %>
+</body>
+</html>

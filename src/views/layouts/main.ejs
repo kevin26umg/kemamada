@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="darks" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kemámada</title>
+    
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=QiwSMfboPt2R&format=png&color=000000" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet"/>
+    <link href="/css/styles.css" rel="stylesheet">
+    <style>
+        /* Estilo para el footer */
+        @media (max-width: 768px) {
+            footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 10; /* Asegura que el footer esté por encima de otros elementos */
+            }
+            .flex-grow {
+                padding-bottom: 60px; /* Añadir espacio inferior para el contenido principal */
+            }
+        }
+    </style>
+</head>
+
+<% if (locals.user) { %>
+    <body class="bg-white dark:bg-s-800 min-h-screen flex flex-col" data-user-id="<%= user.id %>">
+
+<% } else { %>
+    <body class="bg-white dark:bg-slate-800 min-h-screen flex flex-col" >
+
+<% } %>
+
+
+   
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 shadow fixed top-0 left-0 w-full z-10">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="/" class="text-xl font-bold text-white">Kemámada</a>
+            <div>
+                <% if (!locals.user) { %>
+                    <a href="/auth/login" class="text-gray-200 hover:text-white mr-4">Entrar</a>
+                    <a href="/auth/register" class="text-gray-200 hover:text-white">Registrarse</a>
+                <% }  %>
+            </div>
+        </nav>
+
+    </header>
+
+
+
+
+    <div id="notification-container" class="fixed top-0 right-0 m-4"></div>
+
+    <div class="flex flex-1 mt-10 bg-white dark:bg-slate-800">
+        <!-- Sidebar -->
+        <% if (locals.user) { %>
+        <aside class="bg-gradient-to-r from-blue-500 to-indigo-600 fixed top-18 left-0 w-64 h-screen shadow-lg p-4 hidden md:block">
+            <div class="flex items-center mb-6">
+                <img src="<%= locals.user ? locals.user.profilePicture : '' %>" alt="Perfil" class="w-12 h-12 rounded-full mr-2">
+                <span class="text-white font-bold text-lg"><%= locals.user ? locals.user.username : 'Usuario' %></span>
+            </div>
+
+            <nav class="flex flex-col space-y-2">
+                
+                    <a href="/posts" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=i6fZC6wuprSu&format=png&color=FFFFFF" alt="guest-male"/>
+
+                        <span class="ml-2">Inicio</span>
+                    </a>
+
+                    <a href="/users" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=XU3XKgdpT0qG&format=png&color=FFFFFF" alt="guest-male"/>
+
+                        <span class="ml-2">Explorar</span>
+                    </a>
+                    <a href="/notifications" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eMfeVHKyTnkc&format=png&color=FFFFFF" alt="guest-male"/>
+                    
+                       
+                        <span id="noti1" class="absolute top-2 left-4 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                            3 
+                        </span>
+                        
+                        <span class="ml-2">Notificaciones</span>
+                    </a>
+                    
+
+                    <a href="/profile" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=2oRq7VXjDba7&format=png&color=FFFFFF" alt="guest-male"/>
+
+                        <span class="ml-2">Perfil</span>
+                    </a>
+                 
+                    <a href="/friends" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=YzsadpdsoN8e&format=png&color=FFFFFF" alt="guest-male"/>
+
+                        <span class="ml-2">Amigos</span>
+                    </a>
+                 
+                    <!-- <a href="/chat" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
+
+                        <span class="ml-2">Mensajes</span>
+                    </a> -->
+
+                    <a href="/chat" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
+                    
+                       
+                        <span id="msg1" class="absolute top-3 left-5 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                            3 
+                        </span>
+                        
+                        <span class="ml-2">Mensajes</span>
+                    </a>
+                    
+
+                    <a href="/auth/logout" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=jKKnbderVfrn&format=png&color=FFFFFF" alt="guest-male"/>
+
+                        <span class="ml-2">Salir</span>
+                    </a>
+             
+           
+              
+            </nav>
+        </aside>
+        <% } else { %>
+           
+        <% } %>
+
+        <main class="container mx-auto mt-2 px-4 flex-grow bg-white dark:bg-slate-800">
+            <%- body %>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <% if (locals.user) { %>
+    <footer class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 mt-auto flex justify-around items-center md:hidden">
+        <a href="/posts" class="text-white  rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=i6fZC6wuprSu&format=png&color=FFFFFF" alt="guest-male"/>
+        </a>
+        <a href="/users" class="text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=XU3XKgdpT0qG&format=png&color=FFFFFF" alt="guest-male"/>
+
+
+        </a>
+
+        <a href="/notifications" class="relative text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eMfeVHKyTnkc&format=png&color=FFFFFF" alt="guest-male"/>
+        
+            <!-- Contador de notificaciones -->
+            <span id="noti2" class="absolute top-2 right-4 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                3 <!-- Cambia este número dinámicamente -->
+            </span>
+        </a>
+        
+
+        <a href="/profile" class="text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=2oRq7VXjDba7&format=png&color=FFFFFF" alt="guest-male"/>
+        </a>
+    
+        <a href="/friends" class="text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=YzsadpdsoN8e&format=png&color=FFFFFF" alt="guest-male"/>
+
+
+        </a>
+  
+        <!-- <a href="/chat" class="text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
+        </a> -->
+
+        <a href="/chat" class="relative text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
+        
+            <!-- Contador de notificaciones -->
+            <span id="msg2" class="absolute top-3 right-3 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                3 <!-- Cambia este número dinámicamente -->
+            </span>
+        </a>
+
+        <a href="/auth/logout" class="text-white rounded-lg px-3 py-2">
+            <img width="30" height="30" src="https://img.icons8.com/?size=100&id=jKKnbderVfrn&format=png&color=FFFFFF" alt="guest-male"/>
+
+
+        </a>
+    </footer>
+    <% }  %>
+    <script src="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/js/pagedone.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <% if (locals.user) { %>
+        <script src="/js/main.js"></script>
+    <% } %>
+  
+</body>
+</html>

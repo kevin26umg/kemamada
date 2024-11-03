@@ -1,0 +1,92 @@
+<%- contentFor('body') %>
+<div class="max-w-3xl mx-auto mt-10">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Publicaciones</h1>
+    <form action="/posts/create" method="POST" enctype="multipart/form-data" class="mb-6">
+        <textarea name="content" placeholder="Escribe algo..." required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3"></textarea>
+        <div class="flex items-center justify-between mb-4">
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="file" name="image" accept="image/*" class="hidden" onchange="showImage(event)">
+                <span class="inline-flex items-center justify-center w-full py-2 px-4 rounded-full text-sm font-semibold text-white bg-blue-500 hover:bg-blue-600 transition-colors">
+                    Subir Imagen
+                </span>
+            </label>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Publicar</button>
+        </div>
+        <div id="preview" class="mt-4">
+            <!-- Aquí se mostrará la imagen seleccionada -->
+        </div>
+    </form>
+    <div class="bg-white shadow-lg rounded-lg px-8 py-6">
+        <% posts.forEach(post => { %>
+            <div class="mb-6 border-b pb-4">
+                <div class="flex items-start mb-4">
+                    <img src="<%= post.author.profilePicture || '/images/default-avatar.png' %>" alt="<%= post.author.username %>'s profile picture" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <p class="text-gray-800 text-lg font-semibold"><%= post.author.username %></p>
+                        <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toLocaleString() %></p>
+                    </div>
+                </div>
+                <p class="text-gray-800 text-lg mb-4"><%= post.content %></p>
+                <% if (post.image) { %>
+                    <img src="<%= post.image %>" alt="Post image" class="w-full h-auto rounded-lg mb-4">
+                <% } %>
+                <div class="flex items-center mb-4">
+                    <form action="/posts/<%= post.id %>/like" method="POST" class="mr-4">
+                        <button type="submit" class="flex items-center text-gray-500 hover:text-blue-500">
+                            <svg class="w-5 h-5 mr-1" fill="<%= post.likedBy.some(user => user.id === currentUser.id) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span><%= post.likedBy.length %> Likes</span>
+                        </button>
+                    </form>
+                    <button class="flex items-center text-gray-500 hover:text-blue-500">
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <span><%= post.comments.length %> Comentarios</span>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold mb-2">Comentarios:</h3>
+                    <% if (post.comments.length > 0) { %>
+                        <% post.comments.forEach(comment => { %>
+                            <div class="bg-gray-100 p-4 rounded mt-2">
+                                <div class="flex items-center mb-2">
+                                    <img src="<%= comment.author.profilePicture || '/images/default-avatar.png' %>" alt="<%= comment.author.username %>'s profile picture" class="w-8 h-8 rounded-full object-cover mr-2">
+                                    <p class="font-semibold"><%= comment.author.username %></p>
+                                </div>
+                                <p><%= comment.content %></p>
+                                <p class="text-sm text-gray-500 mt-1"><%= new Date(comment.createdAt).toLocaleString() %></p>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-gray-500">No hay comentarios aún.</p>
+                    <% } %>
+                </div>
+                <form action="/posts/<%= post.id %>/comment" method="POST" class="mt-4">
+                    <textarea name="content" placeholder="Escribe un comentario..." required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"></textarea>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Comentar</button>
+                </form>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<script>
+    function showImage(event) {
+        const previewContainer = document.getElementById('preview');
+        previewContainer.innerHTML = ""; // Limpiar el contenedor de vista previa
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('w-56', 'h-56', 'rounded-lg', 'mt-4');
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

@@ -1,0 +1,29 @@
+<header class="bg-white shadow">
+    <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logotipo -->
+        <a href="/" class="text-xl font-bold text-blue-600">Kemámada</a>
+
+        <!-- Botón hamburguesa (visible en pantallas pequeñas) -->
+        <button id="menu-toggle" class="text-gray-700 hover:text-blue-600 focus:outline-none md:hidden">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+
+        <!-- Menú de navegación -->
+        <div id="menu" class="hidden md:flex md:items-center md:space-x-4">
+    
+                <a href="/auth/login" class="text-gray-700 hover:text-blue-600 block md:inline">Entrar</a>
+                <a href="/auth/register" class="text-gray-700 hover:text-blue-600 block md:inline">Registrarse</a>
+       
+        </div>
+    </nav>
+</header>
+
+<script>
+    // Script para mostrar/ocultar el menú en móviles
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('hidden');
+    });
+</script>

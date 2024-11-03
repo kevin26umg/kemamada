@@ -1,0 +1,37 @@
+{
+    "name": "social-network",
+    "version": "1.0.0",
+    "description": "A simple social network application",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "build:css": "tailwindcss build src/public/css/tailwind.css -o src/public/css/styles.css",
+        "build": "npx tailwindcss -i ./src/public/css/tailwind.css -o ./src/public/css/styles.css",
+        "migrate": "knex migrate:latest",
+        "seed": "knex seed:run",
+        "test": "jest"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "connect-flash": "^0.1.1",
+        "dotenv": "^10.0.0",
+        "ejs": "^3.1.10",
+        "express": "^4.21.1",
+        "express-ejs-layouts": "^2.5.1",
+        "express-session": "^1.18.1",
+        "knex": "1.0.1",
+        "multer": "^1.4.5-lts.1",
+        "objection": "^3.0.1",
+        "pagedone": "^1.2.2",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "pg": "^8.6.0",
+        "socket.io": "^4.1.2"
+    },
+    "devDependencies": {
+        "jest": "^27.0.4",
+        "nodemon": "^2.0.7",
+        "tailwindcss": "^3.4.14"
+    }
+}

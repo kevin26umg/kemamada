@@ -1,0 +1,20 @@
+<%- contentFor('body') %>
+<div class="max-w-lg mx-auto mt-10">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Perfil de Usuario</h1>
+    <div class="bg-white shadow-lg rounded-lg px-8 pt-8 pb-6 mb-4">
+        <div class="flex items-center mb-6">
+            <div class="h-16 w-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl font-bold mr-4">
+                <%= user.username.charAt(0).toUpperCase() %>
+            </div>
+            <div>
+                <p class="text-gray-800 text-lg font-semibold"><%= user.username %></p>
+                <p class="text-gray-600 text-sm"><%= user.email %></p>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="/auth/logout" class="inline-block bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+                Cerrar sesión
+            </a>
+        </div>
+    </div>
+</div>

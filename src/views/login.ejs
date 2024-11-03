@@ -1,0 +1,32 @@
+<%- contentFor('body') %>
+<div class="max-w-md mx-auto p-8 bg-gradient-to-br from-blue-400 to-blue-500 rounded-lg shadow-lg mt-10">
+    <h1 class="text-4xl font-bold text-center text-white mb-6">Iniciar sesión</h1>
+    <form action="/auth/login" method="POST" class="space-y-6">
+        <div>
+            <label for="username" class="block text-white text-sm font-semibold">Usuario</label>
+            <input type="text" id="username" name="username" required 
+                   class="shadow-md appearance-none border border-white rounded w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent placeholder-gray-400" placeholder="Ingrese su usuario">
+        </div>
+        <div>
+            <label for="password" class="block text-white text-sm font-semibold">Contraseña</label>
+            <input type="password" id="password" name="password" required 
+                   class="shadow-md appearance-none border border-white rounded w-full py-3 px-4 text-gray-900 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent placeholder-gray-400" placeholder="Ingrese su contraseña">
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit" class="w-full bg-white hover:bg-gray-100 text-blue-500 font-bold py-3 rounded focus:outline-none focus:shadow-outline transition duration-200">
+                Entrar
+            </button>
+        </div>
+        <div class="text-center">
+            <a href="/auth/register" class="inline-block align-baseline font-semibold text-white hover:text-blue-200 text-sm">
+                ¿No tienes una cuenta?
+            </a>
+        </div>
+    </form>
+
+    <% if (error && error.length > 0) { %>
+        <div class="mt-4 bg-red-600 text-white font-bold rounded-lg py-2 px-4 mb-4" role="alert">
+            <%= error %> <!-- Muestra el mensaje de error aquí -->
+        </div>
+    <% } %>
+</div>
