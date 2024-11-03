@@ -9,7 +9,6 @@
         "build:css": "tailwindcss build src/public/css/tailwind.css -o src/public/css/styles.css",
         "build": "npx tailwindcss -i ./src/public/css/tailwind.css -o ./src/public/css/styles.css",
         "migrate": "knex migrate:latest",
-        "seed": "knex seed:run",
         "test": "jest"
     },
     "dependencies": {
