@@ -19,7 +19,7 @@
 
     <form action="/posts/create" method="POST" enctype="multipart/form-data" class="mb-6">
         <div class="relative">
-            <textarea name="content" placeholder="Escribe algo..." required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3 resize-none bg-white dark:bg-slate-800 dark:text-gray:200"></textarea>
+            <textarea name="content" placeholder="Escribe algo..." required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3 resize-none bg-white "></textarea>
     
             <div class="absolute right-0 top-0 flex items-center space-x-2 mt-2 mr-2">
                 <label class="cursor-pointer">
@@ -41,13 +41,13 @@
         </div>
     </form>
     
-    <div class="bg-white dark:bg-gray-700  shadow-lg rounded-lg px-8 py-6">
+    <div class="bg-white   shadow-lg rounded-lg px-8 py-6">
         <% posts.forEach(post => { console.log(post.id); %>
             <div class="mb-6 border-b pb-4">
                 <div class="flex items-start mb-4">
                     <img src="<%= post.author.profilePicture || '/uploads/default.png' %>" alt="<%= post.author.username %>'s profile picture" class="w-12 h-12 rounded-full object-cover mr-4">
                     <div>
-                        <p class="text-gray-800 dark:text-gray-200  text-lg font-semibold"><%= post.author.username %></p>
+                        <p class="text-gray-800   text-lg font-semibold"><%= post.author.username %></p>
                         <p class="text-sm text-gray-500"><%= new Date(post.created_at).toLocaleString() %></p>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                     <div class="relative">
 
                    
-                    <textarea name="content" placeholder="Escribe algo..." required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3 resize-none bg-white dark:bg-slate-800 dark:text-gray:200"></textarea>
+                    <textarea name="content" placeholder="Escribe algo..." required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3 resize-none bg-white "></textarea>
 
                     <div class="absolute right-0 top-0 flex items-center space-x-2 mt-2 mr-2">
                          <button type="submit" class="flex items-center justify-center w-10 h-10 rounded-full  hover:bg-blue-200 transition-colors">

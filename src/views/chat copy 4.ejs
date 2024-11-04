@@ -1,0 +1,121 @@
+<%- contentFor('body') %>
+
+    <div class="max-w-4xl mx-auto mt-10">
+        <div class="bg-white shadow-md rounded-lg p-6 mb-4">
+            <h2 class="text-lg font-semibold mb-4">Amigos</h2>
+            <ul class="list-none" id="friendsList">
+                <% friends.forEach(friend => { %>
+                    <li class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded" 
+                        onclick="loadChat('<%= friend.friend.id %>', '<%= friend.friend.username %>', '<%= friend.friend.profilePicture || '/uploads/default.png' %>')">
+                        <img src="<%= friend.friend.profilePicture || '/uploads/default.png' %>" 
+                             alt="<%= friend.friend.username %>'s profile picture" 
+                             class="w-10 h-10 rounded-full mr-3">
+                        <span class="text-blue-500"><%= friend.friend.username %></span>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+
+        <div id="chatContainer" class="bg-white shadow-lg rounded-lg px-8 py-6 hidden">
+            <h2 class="text-lg font-semibold mb-4">Chat con <span id="chatFriendName" class="text-blue-500"></span></h2>
+            <div id="messagesList" class="h-96 overflow-y-auto mb-4"></div>
+            
+            <form id="messageForm" class="relative">
+                <input type="text" id="messageInput" class="w-full border rounded-full py-2 px-4 pr-12" placeholder="Escribe tu mensaje...">
+                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full p-2">
+                    Enviar
+                </button>
+            </form>
+        </div>
+    </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  const userId = '<%= userId %>';
+  let currentChatId = null;
+  let currentUserProfilePicture = '<%= currentUser.profilePicture %>';
+
+  socket.on('connect', () => {
+      console.log('Conectado a Socket.IO');
+      socket.emit('join chat', userId);
+  });
+
+  function loadChat(friendId, friendName, friendProfilePicture) {
+      if (currentChatId) {
+          socket.emit('leave chat', currentChatId);
+      }
+      currentChatId = friendId;
+      socket.emit('join chat', currentChatId);
+
+      document.getElementById('chatFriendName').textContent = friendName;
+      document.getElementById('chatContainer').classList.remove('hidden');
+      
+      fetch(`/chat/messages/${friendId}`)
+          .then(response => response.json())
+          .then(messages => {
+              const messagesList = document.getElementById('messagesList');
+              messagesList.innerHTML = '';
+              messages.forEach(message => appendMessage(message, friendName, friendProfilePicture));
+              messagesList.scrollTop = messagesList.scrollHeight;
+          })
+          .catch(error => console.error('Error al cargar mensajes:', error));
+  }
+
+  function appendMessage(message, friendName, friendProfilePicture) {
+      const messagesList = document.getElementById('messagesList');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('mb-4');
+      
+      const isSentByUser = message.senderId.toString() === userId;
+      const profilePicture = isSentByUser ? currentUserProfilePicture : friendProfilePicture;
+      const username = isSentByUser ? 'Tú' : friendName;
+
+      messageElement.innerHTML = `
+          <div class="flex ${isSentByUser ? 'justify-end' : 'justify-start'}">
+              <div class="flex ${isSentByUser ? 'flex-row-reverse' : 'flex-row'} items-end">
+                  <img src="${profilePicture}" alt="${username}" class="w-8 h-8 rounded-full ${isSentByUser ? 'ml-2' : 'mr-2'}">
+                  <div class="${isSentByUser ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded-lg px-4 py-2 max-w-xs">
+                      <p class="text-sm">${message.content}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="text-xs text-gray-500 mt-1 ${isSentByUser ? 'text-right' : 'text-left'}">
+              ${new Date(message.created_at).toLocaleTimeString()}
+          </div>
+      `;
+      messagesList.appendChild(messageElement);
+      messagesList.scrollTop = messagesList.scrollHeight;
+  }
+
+  document.getElementById('messageForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const messageInput = document.getElementById('messageInput');
+      const content = messageInput.value.trim();
+      
+      if (content && currentChatId) {
+          console.log('Enviando mensaje:', { recipientId: currentChatId, content });
+          socket.emit('send message', { recipientId: currentChatId, content });
+          messageInput.value = '';
+      }
+  });
+
+  socket.on('new message', (message) => {
+      console.log('Nuevo mensaje recibido:', message);
+      if (message.senderId.toString() === currentChatId || message.senderId.toString() === userId) {
+          const friendInfo = Array.from(document.getElementById('friendsList').children)
+              .find(li => li.onclick.toString().includes(message.senderId.toString() === userId ? message.recipientId : message.senderId));
+          
+          if (friendInfo) {
+              const friendName = friendInfo.querySelector('span').textContent;
+              const friendProfilePicture = friendInfo.querySelector('img').src;
+              appendMessage(message, friendName, friendProfilePicture);
+          }
+      }
+  });
+
+  socket.on('message error', (error) => {
+      console.error('Error al enviar mensaje:', error);
+      
+  });
+</script>

@@ -1,69 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
-
+    console.log(socket);
     // Unirse a la sala del usuario actual
     const userId = document.body.dataset.userId;
     if (userId) {
         socket.emit('join', userId);
     }
 
-    // document.querySelectorAll('.like-form').forEach(form => {
-    //     form.addEventListener('submit', async (e) => {
-    //       e.preventDefault();
-      
-    //       // Obtén el postId desde el botón dentro del formulario
-    //       const postId = form.querySelector('.like-button').getAttribute('data-post-id');
-      
-    //       try {
-    //         const response = await fetch(`/posts/${postId}/like`, {
-    //           method: 'POST',
-    //           headers: { 'Content-Type': 'application/json' }
-    //         });
-    //         if (response.ok) {
-    //           const result = await response.json();
-    //           document.getElementById(`like-count-${postId}`).textContent = `${result.likeCount} Likes`;
-    //         }
-    //       } catch (error) {
-    //         console.error('Error liking post:', error);
-    //       }
-    //     });
-    //   });
-      
-
-    // document.querySelectorAll('.like-form').forEach(form => {
-    //     form.addEventListener('submit', async (e) => {
-    //       e.preventDefault();
-      
-    //       const likeButton = form.querySelector('.like-button');
-    //       const postId = likeButton.getAttribute('data-post-id');
-    //         alert(postId);
-    //       try {
-    //         const response = await fetch(`/posts/${postId}/like`, {
-    //           method: 'POST',
-    //           headers: { 'Content-Type': 'application/json' }
-    //         });
-    //         if (response.ok) {
-    //           const result = await response.json();
-    //           const likeCountElement = document.getElementById(`like-count-${postId}`);
-    //           likeCountElement.textContent = `${result.likeCount} Likes`;
-      
-    //           // Cambiar el color del botón de like
-    //           const svgElement = likeButton.querySelector('svg');
-    //           if (svgElement) {
-    //             if (svgElement.getAttribute('fill') === 'none') {
-    //               svgElement.setAttribute('fill', 'currentColor');
-    //             } else {
-    //               svgElement.setAttribute('fill', 'none');
-    //             }
-    //           }
-    //         }
-    //       } catch (error) {
-    //         console.error('Error liking post:', error);
-    //       }
-    //     });
-    //   });
+    socket.on('connect', () => {
+        console.log('Conectado al servidor');
+      });
+    
+      socket.on('disconnect', () => {
+        console.log('Desconectado del servidor');
+      });
 
 
+      
     document.querySelectorAll('.like-form').forEach(form => {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
@@ -140,15 +93,11 @@ document.querySelectorAll('.comment-form').forEach(form => {
         }
     });
 
-    // Manejar notificaciones
-    socket.on('notification', (notification) => {
-        const notificationContainer = document.getElementById('notification-container');
-        const notificationElement = document.createElement('div');
-        notificationElement.className = 'bg-blue-500 text-white p-4 rounded mb-2';
-        notificationElement.textContent = notification.message;
-        notificationContainer.appendChild(notificationElement);
-        setTimeout(() => {
-            notificationElement.remove();
-        }, 5000);
+    socket.on('newMessage', (message) => {
+        console.log(message);
+        if (message.senderId === currentFriendId || message.senderId === userId) {
+            loadMessages(currentFriendId, currentFriendname, currentFriendProfilePicture);
+        }
     });
+
 });

@@ -1,20 +1,20 @@
-# Social Network Project
+# Proyecto Red Social
 
 This is a simple social network application built with Node.js, Express, and PostgreSQL.
-
+Esta es una simple aplicación red social  hecha con Node.js, Express y PostgreSQL,
 ## Features
 
-- User authentication (register, login, logout)
-- Post creation and viewing
-- Friend requests and management
-- Real-time chat
+- Autenticación de usuario (Registro, login, logout)
+- Creación y vista de publicaciones
+- Manejo de solicitudes de amistad
+- Chat en tiempo real
 
-## Prerequisites
+## Prerequisitos
 
 - Node.js
 - PostgreSQL
-- Docker (optional)
+- Docker (opcional)
 
-## Installation
+## Instalación
 
-1. Clone the repository:
+1. Clona el repositorio

@@ -13,7 +13,16 @@ router.get('/', async (req, res) => {
     .where('status', 'accepted')
     .withGraphFetched('friend');
 
-    res.render('chat', { friends, userId: req.user.id, layout: 'layouts/main' });
+    res.render('chat', { 
+      friends, 
+      userId: req.user.id, 
+      currentUser: {
+          id: req.user.id,
+          username: req.user.username,
+          profilePicture: req.user.profilePicture || '/uploads/default.png'
+      },
+      layout: 'layouts/main' 
+  });
 } else {
    res.redirect('/');
 }
@@ -47,17 +56,78 @@ router.get('/messages/:friendId', async (req, res) => {
 
 
 // Enviar un nuevo mensaje
+// router.post('/send', async (req, res) => {
+//   const { recipientId, content } = req.body; // Asegúrate de que el contenido del mensaje y el ID del destinatario se envíen en el cuerpo de la solicitud
+//   try {
+//     await Message.query().insert({
+//       senderId: req.user.id, // ID del usuario que envía el mensaje
+//       recipientId,           // ID del usuario que recibe el mensaje
+//       content                // Contenido del mensaje
+//     });
+//     res.status(201).json({ message: 'Mensaje enviado' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Error al enviar el mensaje' });
+//   }
+// });
+
+
+// router.post('/send', async (req, res) => {
+//   const { recipientId, content } = req.body;
+//   try {
+//       const message = await Message.query().insert({
+//           senderId: req.user.id,
+//           recipientId,
+//           content
+//       });
+      
+//       // Emitir el mensaje a través de Socket.IO
+//       const io = req.app.get('io');
+//       io.to(recipientId()).to(req.user.id()).emit('newMessage', message);
+
+//       res.status(201).json({ message: 'Mensaje enviado' });
+//   } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'Error al enviar el mensaje' });
+//   }
+// });
+
+
+// router.post('/send', async (req, res) => {
+//   const { recipientId, content } = req.body;
+//   try {
+//     const message = await Message.query().insert({
+//       senderId: req.user.id,
+//       recipientId,
+//       content
+//     });
+    
+//     const io = req.app.get('io');
+//     io.to(req.user.id).to(recipientId).emit('new message', message);
+
+//     res.status(201).json(message);
+//   } catch (error) {
+//     console.error('Error al enviar mensaje:', error);
+//     res.status(500).json({ error: 'Error al enviar el mensaje' });
+//   }
+// });
+
+
 router.post('/send', async (req, res) => {
-  const { recipientId, content } = req.body; // Asegúrate de que el contenido del mensaje y el ID del destinatario se envíen en el cuerpo de la solicitud
+  const { recipientId, content } = req.body;
   try {
-    await Message.query().insert({
-      senderId: req.user.id, // ID del usuario que envía el mensaje
-      recipientId,           // ID del usuario que recibe el mensaje
-      content                // Contenido del mensaje
+    const message = await Message.query().insert({
+      senderId: req.user.id,
+      recipientId,
+      content
     });
-    res.status(201).json({ message: 'Mensaje enviado' });
+    
+    const io = req.app.get('io');
+    io.to(req.user.id.toString()).to(recipientId.toString()).emit('new message', message);
+
+    res.status(201).json(message);
   } catch (error) {
-    console.error(error);
+    console.error('Error al enviar mensaje:', error);
     res.status(500).json({ error: 'Error al enviar el mensaje' });
   }
 });

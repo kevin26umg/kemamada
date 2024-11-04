@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html class="darks" lang="en">
+<html class="" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kemámada</title>
     
-    <link rel="icon" href="https://img.icons8.com/?size=100&id=QiwSMfboPt2R&format=png&color=000000" type="image/x-icon">
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=CQTnvwCwPc15&format=png&color=000000" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet"/>
-    <link href="/css/styles.css" rel="stylesheet">
+    <!-- <link href="/css/styles.css" rel="stylesheet"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Estilo para el footer */
         @media (max-width: 768px) {
@@ -26,10 +27,10 @@
 </head>
 
 <% if (locals.user) { %>
-    <body class="bg-white dark:bg-s-800 min-h-screen flex flex-col" data-user-id="<%= user.id %>">
+    <body class="bg-white  min-h-screen flex flex-col" data-user-id="<%= user.id %>">
 
 <% } else { %>
-    <body class="bg-white dark:bg-slate-800 min-h-screen flex flex-col" >
+    <body class="bg-white  min-h-screen flex flex-col" >
 
 <% } %>
 
@@ -51,9 +52,9 @@
 
 
 
-    <div id="notification-container" class="fixed top-0 right-0 m-4"></div>
+    <!-- <div id="notification-container" class="fixed top-0 right-0 m-4"></div> -->
 
-    <div class="flex flex-1 mt-10 bg-white dark:bg-slate-800">
+    <div class="flex flex-1 mt-10 bg-white ">
         <!-- Sidebar -->
         <% if (locals.user) { %>
         <aside class="bg-gradient-to-r from-blue-500 to-indigo-600 fixed top-18 left-0 w-64 h-screen shadow-lg p-4 hidden md:block">
@@ -75,7 +76,7 @@
 
                         <span class="ml-2">Explorar</span>
                     </a>
-                    <a href="/notifications" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                    <!-- <a href="/notifications" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
                         <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eMfeVHKyTnkc&format=png&color=FFFFFF" alt="guest-male"/>
                     
                        
@@ -84,7 +85,7 @@
                         </span>
                         
                         <span class="ml-2">Notificaciones</span>
-                    </a>
+                    </a> -->
                     
 
                     <a href="/profile" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
@@ -108,10 +109,10 @@
                     <a href="/chat" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
                         <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
                     
-                       
+<!--                        
                         <span id="msg1" class="absolute top-3 left-5 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                             3 
-                        </span>
+                        </span> -->
                         
                         <span class="ml-2">Mensajes</span>
                     </a>
@@ -131,7 +132,7 @@
            
         <% } %>
 
-        <main class="container mx-auto mt-2 px-4 flex-grow bg-white dark:bg-slate-800">
+        <main class="container mx-auto mt-1 px-1 flex-grow bg-white ">
             <%- body %>
         </main>
     </div>
@@ -148,14 +149,14 @@
 
         </a>
 
-        <a href="/notifications" class="relative text-white rounded-lg px-3 py-2">
+        <!-- <a href="/notifications" class="relative text-white rounded-lg px-3 py-2">
             <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eMfeVHKyTnkc&format=png&color=FFFFFF" alt="guest-male"/>
         
-            <!-- Contador de notificaciones -->
+       
             <span id="noti2" class="absolute top-2 right-4 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                3 <!-- Cambia este número dinámicamente -->
+                3 
             </span>
-        </a>
+        </a> -->
         
 
         <a href="/profile" class="text-white rounded-lg px-3 py-2">
@@ -175,10 +176,10 @@
         <a href="/chat" class="relative text-white rounded-lg px-3 py-2">
             <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
         
-            <!-- Contador de notificaciones -->
-            <span id="msg2" class="absolute top-3 right-3 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                3 <!-- Cambia este número dinámicamente -->
-            </span>
+          
+            <!-- <span id="msg2" class="absolute top-3 right-3 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                3 
+            </span> -->
         </a>
 
         <a href="/auth/logout" class="text-white rounded-lg px-3 py-2">
