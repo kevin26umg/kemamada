@@ -17,4 +17,4 @@ Esta es una simple aplicación red social  hecha con Node.js, Express y PostgreS
 
 ## Instalación
 
-1. Clona el repositorio
+1. Clona el repositorio.

@@ -21,6 +21,9 @@ const io = socketIo(server);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.get('/manifest.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'manifest.json'));
+});
 // app.use(session({
 //   secret: process.env.SESSION_SECRET || 'tu_secreto_default',
 //   resave: false,

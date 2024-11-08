@@ -1,0 +1,16 @@
+{
+    "name": "Kemámada",
+    "short_name": "Kemámada",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4f46e5",
+    "icons": [
+      {
+        "src": "/icons/icon94.png",
+        "sizes": "94x94",
+        "type": "image/png"
+      }
+    ]
+  }
+  

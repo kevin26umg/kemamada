@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kemámada</title>
     
+    <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#4f46e5">
+
     <link rel="icon" href="https://img.icons8.com/?size=100&id=CQTnvwCwPc15&format=png&color=000000" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet"/>
     <!-- <link href="/css/styles.css" rel="stylesheet"> -->
@@ -194,7 +197,22 @@
     <script src="/socket.io/socket.io.js"></script>
     <% if (locals.user) { %>
         <script src="/js/main.js"></script>
+
     <% } %>
+
+    <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(registration => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch(error => {
+      console.error('Service Worker registration failed:', error);
+    });
+}
+
+
+    </script>
   
 </body>
 </html>
