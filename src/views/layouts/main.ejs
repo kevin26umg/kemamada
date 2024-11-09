@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kemámada</title>
+    <title>KMD Connect</title>
     
     <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#4f46e5">
@@ -11,9 +11,13 @@
     <link rel="icon" href="https://img.icons8.com/?size=100&id=CQTnvwCwPc15&format=png&color=000000" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/pagedone@1.2.2/src/css/pagedone.css " rel="stylesheet"/>
     <!-- <link href="/css/styles.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/400.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Estilo para el footer */
+ 
+
+
         @media (max-width: 768px) {
             footer {
                 position: fixed;
@@ -26,28 +30,52 @@
                 padding-bottom: 60px; /* Añadir espacio inferior para el contenido principal */
             }
         }
+
+        #messagesList{
+            scrollbar-width: none;
+        }
+
+                body {
+  font-family: "Geist Sans";
+}
+html{
+    scrollbar-width: none;
+}
     </style>
 </head>
 
 <% if (locals.user) { %>
-    <body class="bg-white  min-h-screen flex flex-col" data-user-id="<%= user.id %>">
+    <body class="bg-white/0  dark:bg-indigo-950 min-h-screen flex flex-col" data-user-id="<%= user.id %>">
 
 <% } else { %>
-    <body class="bg-white  min-h-screen flex flex-col" >
+    <body class="bg-white/10 dark:bg-indigo-950 min-h-screen flex flex-col" >
 
 <% } %>
 
 
    
-    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 shadow fixed top-0 left-0 w-full z-10">
+    <header class="bg-gradient-to-b from-indigo-500/60 via-blue-600/30 to-sky-600/10 shadow fixed  backdrop-blur top-0 left-0 w-full z-10">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="/" class="text-xl font-bold text-white">Kemámada</a>
-            <div>
+            <a href="/" class="text-xl font-bold text-white">KMD Connect</a>
+           
+        
+            <div class="absolute inset-y-0 right-20 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <% if (!locals.user) { %>
                     <a href="/auth/login" class="text-gray-200 hover:text-white mr-4">Entrar</a>
                     <a href="/auth/register" class="text-gray-200 hover:text-white">Registrarse</a>
                 <% }  %>
             </div>
+
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <button id="dark-mode-toggle" type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <span class="absolute -inset-1.5"></span>
+                 
+                  <img width="25" height="25" src="https://img.icons8.com/?size=100&id=ssUuD1e7LYMZ&format=png&color=FFFFFF" alt="guest-male"/>
+                    
+                </button>
+             
+        
+              </div>
         </nav>
 
     </header>
@@ -57,29 +85,39 @@
 
     <!-- <div id="notification-container" class="fixed top-0 right-0 m-4"></div> -->
 
-    <div class="flex flex-1 mt-10 bg-white ">
+    <div class="flex flex-1 mt-10 bg-gradient-to-b from-indigo-100 via-blue-100 to-sky-100
+    dark:from-indigo-950    dark:via-blue-950    dark:to-sky-950 ">
         <!-- Sidebar -->
         <% if (locals.user) { %>
-        <aside class="bg-gradient-to-r from-blue-500 to-indigo-600 fixed top-18 left-0 w-64 h-screen shadow-lg p-4 hidden md:block">
-            <div class="flex items-center mb-6">
+        <aside class="bg-gradient-to-b from-indigo-500/30 via-blue-600/20 to-sky-600/10 fixed top-18 left-0 w-60  h-screen shadow-lg p-4 backdrop-blur hidden md:block">
+            <div class="flex items-center mt-6 mb-6">
                 <img src="<%= user.profilePicture || '/uploads/default.png' %>" alt="Perfil" class="w-12 h-12 rounded-full mr-2">
-                <span class="text-white font-bold text-lg"><%= locals.user ? locals.user.username : 'Usuario' %></span>
+                <span class="text-gray-600  dark:text-gray-50  font-bold text-lg"><%= locals.user ? locals.user.username : 'Usuario' %></span>
             </div>
 
             <nav class="flex flex-col space-y-2">
                 
-                    <a href="/posts" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
-                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=i6fZC6wuprSu&format=png&color=FFFFFF" alt="guest-male"/>
+                    <a href="/posts" class="text-gray-700 dark:text-gray-50 hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
+
+                        <img class="dark:hidden block" width="30" height="30" src="https://img.icons8.com/?size=100&id=i6fZC6wuprSu&format=png&color=374151" alt="guest-male"/>
+
+                        <img class="dark:block hidden" width="30" height="30" src="https://img.icons8.com/?size=100&id=i6fZC6wuprSu&format=png&color=FFFFFF" alt="guest-male"/>
+
+                       
+
+                    
 
                         <span class="ml-2">Inicio</span>
                     </a>
 
-                    <a href="/users" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
-                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=XU3XKgdpT0qG&format=png&color=FFFFFF" alt="guest-male"/>
+                    <a href="/users" class="text-gray-700 dark:text-gray-50 hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
+
+                        <img class="dark:hidden block" width="30" height="30" src="https://img.icons8.com/?size=100&id=XU3XKgdpT0qG&format=png&color=374151" alt="guest-male"/>
+                        <img class="dark:block hidden" width="30" height="30" src="https://img.icons8.com/?size=100&id=XU3XKgdpT0qG&format=png&color=FFFFFF" alt="guest-male"/>
 
                         <span class="ml-2">Explorar</span>
                     </a>
-                    <!-- <a href="/notifications" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                    <!-- <a href="/notifications" class="relative text-white hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
                         <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eMfeVHKyTnkc&format=png&color=FFFFFF" alt="guest-male"/>
                     
                        
@@ -91,26 +129,37 @@
                     </a> -->
                     
 
-                    <a href="/profile" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
-                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=2oRq7VXjDba7&format=png&color=FFFFFF" alt="guest-male"/>
+                    <a href="/profile" class="text-gray-700 dark:text-gray-50 hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
+                        <img class="dark:hidden block" width="30" height="30" src="https://img.icons8.com/?size=100&id=2oRq7VXjDba7&format=png&color=374151" alt="guest-male"/>
+                        <img class="dark:block hidden" width="30" height="30" src="https://img.icons8.com/?size=100&id=2oRq7VXjDba7&format=png&color=FFFFFF" alt="guest-male"/>
+
+                    
 
                         <span class="ml-2">Perfil</span>
                     </a>
                  
-                    <a href="/friends" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
-                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=YzsadpdsoN8e&format=png&color=FFFFFF" alt="guest-male"/>
+                    <a href="/friends" class="text-gray-700 dark:text-gray-50 hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
+
+                        <img class="dark:hidden block" width="30" height="30" src="https://img.icons8.com/?size=100&id=YzsadpdsoN8e&format=png&color=374151" alt="guest-male"/>
+                        <img class="dark:block hidden" width="30" height="30" src="https://img.icons8.com/?size=100&id=YzsadpdsoN8e&format=png&color=FFFFFF" alt="guest-male"/>
+
+                    
 
                         <span class="ml-2">Amigos</span>
                     </a>
                  
-                    <!-- <a href="/chat" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
+                    <!-- <a href="/chat" class="text-white hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
                         <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
 
                         <span class="ml-2">Mensajes</span>
                     </a> -->
 
-                    <a href="/chat" class="relative text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
-                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
+                    <a href="/chat" class="relative text-gray-700 dark:text-gray-50  hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
+
+                        <img class="dark:hidden block" width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=374151" alt="guest-male"/>
+                        <img class="dark:block hidden" width="30" height="30" src="https://img.icons8.com/?size=100&id=eBEo6FOQZ3v4&format=png&color=FFFFFF" alt="guest-male"/>
+
+                  
                     
 <!--                        
                         <span id="msg1" class="absolute top-3 left-5 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -121,8 +170,11 @@
                     </a>
                     
 
-                    <a href="/auth/logout" class="text-white hover:bg-blue-700 rounded-lg px-3 py-2 flex items-center">
-                        <img width="30" height="30" src="https://img.icons8.com/?size=100&id=jKKnbderVfrn&format=png&color=FFFFFF" alt="guest-male"/>
+                    <a href="/auth/logout" class="text-gray-700 dark:text-gray-50  hover:bg-sky-300/60 rounded-lg px-3 py-2 flex items-center">
+
+                        <img class="dark:hidden block" width="30" height="30" src="https://img.icons8.com/?size=100&id=jKKnbderVfrn&format=png&color=374151" alt="guest-male"/>
+                        <img class="dark:block hidden" width="30" height="30" src="https://img.icons8.com/?size=100&id=jKKnbderVfrn&format=png&color=FFFFFF" alt="guest-male"/>
+
 
                         <span class="ml-2">Salir</span>
                     </a>
@@ -135,16 +187,18 @@
            
         <% } %>
 
-        <main class="container mx-auto mt-1 px-1 flex-grow bg-white ">
+        <main class="container mt-1 px-1 flex-grow md:ml-64 m-3">
             <%- body %>
         </main>
     </div>
 
     <!-- Footer -->
     <% if (locals.user) { %>
-    <footer class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 mt-auto flex justify-around items-center md:hidden">
+    <footer class="bg-gradient-to-b from-indigo-500/30 via-blue-600/20 to-sky-600/10 p-2 mt-auto flex justify-around items-center md:hidden backdrop-blur-lg ">
         <a href="/posts" class="text-white  rounded-lg px-3 py-2">
             <img width="30" height="30" src="https://img.icons8.com/?size=100&id=i6fZC6wuprSu&format=png&color=FFFFFF" alt="guest-male"/>
+
+            
         </a>
         <a href="/users" class="text-white rounded-lg px-3 py-2">
             <img width="30" height="30" src="https://img.icons8.com/?size=100&id=XU3XKgdpT0qG&format=png&color=FFFFFF" alt="guest-male"/>
@@ -210,9 +264,46 @@ if ('serviceWorker' in navigator) {
       console.error('Service Worker registration failed:', error);
     });
 }
-
+tailwind.config = {
+        darkMode: 'class',
+        theme: {
+    extend: {
+      backgroundSize: {
+        'size-200': '200% 200%',
+      },
+      backgroundPosition: {
+        'pos-0': '0% 0%',
+        'pos-100': '100% 0%',
+      },
+    },
+  }
+    }
 
     </script>
+    <script>
+        // Al cargar la página, comprobar si el modo oscuro está activado
+        document.addEventListener('DOMContentLoaded', () => {
+          const darkModeToggle = document.getElementById('dark-mode-toggle');
+          const currentTheme = localStorage.getItem('theme');
+      
+          if (currentTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+      
+          darkModeToggle.addEventListener('click', () => {
+            // Cambiar la clase para alternar entre claro y oscuro
+            document.documentElement.classList.toggle('dark');
+      
+            // Guardar la preferencia en el localStorage
+            if (document.documentElement.classList.contains('dark')) {
+              localStorage.setItem('theme', 'dark');
+            } else {
+              localStorage.setItem('theme', 'light');
+            }
+          });
+        });
+      </script>
+      
   
 </body>
 </html>

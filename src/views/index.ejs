@@ -1,8 +1,8 @@
 <%- contentFor('body') %>
 <div class="flex items-start justify-center ">
-    <div class="bg-white dark:bg-gray-700 rounded-lg p-10 shadow-xl text-center mt-20">
-        <h1 class="text-5xl font-extrabold text-gray-800 dark:text-white mb-4">Bienvenido a Kemámada</h1>
-        <p class="text-2xl text-gray-700 dark:text-gray-200 mb-8">Conéctate con tus amigos y comparte momentos.</p>
+    <div class="bg-white/50 dark:bg-gray-950/30 bg-gradient-to-b from-indigo-500/30 via-blue-600/30 to-sky-600/30 rounded-lg p-10 shadow-xl text-center mt-20">
+        <h1 class="text-5xl font-extrabold text-gray-800 dark:text-gray-200 mb-4">Bienvenido a KMD Connect</h1>
+        <p class="text-2xl text-gray-700 dark:text-gray-300 mb-8">Conéctate con tus amigos y comparte momentos.</p>
         <% if (!locals.user) { %>
             <div class="flex justify-center space-x-4">
                 <a href="/auth/login" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
